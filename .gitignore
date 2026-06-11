@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+
+# Blender temporary and backup files
+*.blend1
+*.blend2
+*.blend@
+*.blend~
+
+# Local export outputs
+*.fbx
+*.log

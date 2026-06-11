@@ -1,0 +1,16 @@
+schema_version = "1.0.0"
+
+id = "kurotori_non_destructive_batch_exporter"
+version = "0.1.0"
+name = "Kurotori Non-Destructive Batch Exporter"
+tagline = "Headless FBX batch exporter with non-destructive source workflow"
+maintainer = "kurotori4423@gmail.com"
+type = "add-on"
+
+permissions = ["files"]
+tags = ["Import-Export"]
+blender_version_min = "4.5.7"
+
+license = [
+  "SPDX:MIT",
+]
