@@ -262,6 +262,12 @@ def merge_group(group):
     if existing and existing not in objects:
         raise ExportWorkerError("Merge output name already exists: " + output_name)
 
+    # 結合元に出力名と同じ名前があるとBlenderの自動リネームで.001が付くため、
+    # 一時ファイル内でだけ結合元の名前を退避して最終名を確実に空ける。
+    for index, obj in enumerate(objects):
+        obj.name = "__NDBE_MERGE_SOURCE_OBJECT_" + str(index)
+        obj.data.name = "__NDBE_MERGE_SOURCE_MESH_" + str(index)
+
     ensure_object_mode()
     bpy.ops.object.select_all(action="DESELECT")
     for obj in objects:
@@ -274,8 +280,13 @@ def merge_group(group):
         bpy.ops.object.join()
 
     merged = bpy.context.view_layer.objects.active
+    for mesh in list(bpy.data.meshes):
+        if mesh.users == 0 and mesh.name == output_name:
+            bpy.data.meshes.remove(mesh)
     merged.name = output_name
     merged.data.name = output_name
+    if merged.name != output_name or merged.data.name != output_name:
+        raise ExportWorkerError("Failed to reserve merge output name: " + output_name)
     log("Merged meshes into: " + output_name)
     return merged
 
